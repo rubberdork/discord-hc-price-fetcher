@@ -18,6 +18,7 @@ const DEFAULT_API_URL = PANCAKESWAP_API_URL
 function extractData (source, data) {
   if (source === 'pancakeswap') {
     return {
+      source,
       price: data.data.price,
       last_update: data.updated_at
     }
@@ -25,6 +26,7 @@ function extractData (source, data) {
 
   if (source === 'dexguru') {
     return {
+      source,
       price: data.price_usd,
       last_update: data.timestamp
     }
