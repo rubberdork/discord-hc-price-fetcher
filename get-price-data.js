@@ -25,7 +25,8 @@ function extractData (source, data) {
 
   if (source === 'dexguru') {
     return {
-      price: data.price_usd
+      price: data.price_usd,
+      last_update: data.timestamp
     }
   }
 }
