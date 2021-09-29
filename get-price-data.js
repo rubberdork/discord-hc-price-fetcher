@@ -39,15 +39,20 @@ export async function getPriceData (source=DEFAULT_SOURCE) {
     args = DEXGURU_API_ARGS
   }
 
+  console.log(new Date())
+
   const res = await fetch(url, args)
   const data = await res.json()
 
   // In rare cases, PancakeSwap doesn't return price data so we fallback to dexguru
   if (data?.data?.price === '0') {
+    console.log('Pancakeswap returned no price data. Fallback to DexGuru.\n')
     return await getPriceData('dexguru')
   }
 
   data.source = source
+
+  console.log(data)
 
   return extractData(source, data)
 }
