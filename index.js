@@ -23,7 +23,7 @@ import { getPriceData } from './get-price-data.js'
     const price = parseFloat(priceData.price).toFixed(8)
 
     interaction.reply(
-      `$${price}\n*data from pancakeswap (wen coingecko)*`
+      `$${price}\n*data from ${priceData.source} (wen coingecko?)*`
     )
   })
 
