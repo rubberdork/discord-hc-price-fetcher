@@ -47,5 +47,7 @@ export async function getPriceData (source=DEFAULT_SOURCE) {
     return await getPriceData('dexguru')
   }
 
+  data.source = source
+
   return extractData(source, data)
 }
