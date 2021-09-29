@@ -41,8 +41,6 @@ export async function getPriceData (source=DEFAULT_SOURCE) {
     args = DEXGURU_API_ARGS
   }
 
-  console.log(new Date())
-
   const res = await fetch(url, args)
   const data = await res.json()
 
