@@ -12,12 +12,11 @@ const DEXGURU_API_URL = `https://api.dev.dex.guru/v1/chain/${BSC_CHAIN_ID}/token
 const { DEXGURU_API_KEY } = process.env
 const DEXGURU_API_ARGS = { headers: { 'api-key': DEXGURU_API_KEY } }
 
-const DEFAULT_SOURCE = 'pancake'
+const DEFAULT_SOURCE = 'pancakeswap'
 const DEFAULT_API_URL = PANCAKESWAP_API_URL
 
-
 function extractData (source, data) {
-  if (source === 'pancake') {
+  if (source === 'pancakeswap') {
     return {
       price: data.data.price,
       last_update: data.updated_at
