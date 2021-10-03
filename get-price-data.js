@@ -16,8 +16,7 @@ const DEXGURU_API_URL = `https://api.dev.dex.guru/v1/chain/${BSC_CHAIN_ID}/token
 const { DEXGURU_API_KEY } = process.env
 const DEXGURU_API_ARGS = { headers: { 'api-key': DEXGURU_API_KEY } }
 
-const DEFAULT_SOURCE = 'pancakeswap'
-const DEFAULT_API_URL = PANCAKESWAP_API_URL
+const DEFAULT_SOURCE = 'livecoinwatch'
 
 function extractData (source, data) {
   const common = { source }
@@ -46,12 +45,8 @@ function extractData (source, data) {
 }
 
 export async function getPriceData (source=DEFAULT_SOURCE) {
-  let url = DEFAULT_API_URL
+  let url = ''
   let args = {}
-  if (source === 'dexguru') {
-    url = DEXGURU_API_URL
-    args = DEXGURU_API_ARGS
-  }
 
   if (source === 'livecoinwatch') {
     url = LIVECOINWATCH_API_URL
@@ -69,18 +64,19 @@ export async function getPriceData (source=DEFAULT_SOURCE) {
     }
   }
 
+  if (source === 'pancakeswap') {
+    url = PANCAKESWAP_API_URL
+  }
+
+  if (source === 'dexguru') {
+    url = DEXGURU_API_URL
+    args = DEXGURU_API_ARGS
+  }
+
   const res = await fetch(url, args)
   const data = await res.json()
 
-  // In rare cases, PancakeSwap doesn't return price data so we fallback to Live Coin Watch
-  if (data?.data?.price === '0') {
-    console.log('Pancakeswap returned no price data. Fallback to Live Coin Watch.\n')
-    return await getPriceData('livecoinwatch')
-  }
-
   data.source = source
-
   console.log(data)
-
   return extractData(source, data)
 }
