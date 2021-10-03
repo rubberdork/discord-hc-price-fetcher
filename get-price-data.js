@@ -31,7 +31,9 @@ function extractData (source, data) {
   if (source === 'livecoinwatch') {
     return {
       ...common,
-      price: data.rate
+      price: data.rate,
+      volume: data.volume,
+      cap: data.cap
     }
   }
 
