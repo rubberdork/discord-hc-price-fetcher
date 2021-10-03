@@ -7,6 +7,10 @@ const TOKEN_ADDRESS = '0xf65e64f2a7a625fbd5635dca9487244bc1983a84'
 
 const PANCAKESWAP_API_URL = `https://api.pancakeswap.info/api/v2/tokens/${TOKEN_ADDRESS}`
 
+const LIVECOINWATCH_API_URL = 'https://api.livecoinwatch.com/coins/single'
+const LIVECOINWATCH_HC_TICKER = 'HUMBLECOIN'
+const { LIVECOINWATCH_API_KEY } = process.env
+
 const BSC_CHAIN_ID = 56
 const DEXGURU_API_URL = `https://api.dev.dex.guru/v1/chain/${BSC_CHAIN_ID}/tokens/${TOKEN_ADDRESS}/market`
 const { DEXGURU_API_KEY } = process.env
@@ -21,6 +25,13 @@ function extractData (source, data) {
       source,
       price: data.data.price,
       last_update: data.updated_at
+    }
+  }
+
+  if (source === 'livecoinwatch') {
+    return {
+      source,
+      price: data.rate
     }
   }
 
@@ -39,6 +50,22 @@ export async function getPriceData (source=DEFAULT_SOURCE) {
   if (source === 'dexguru') {
     url = DEXGURU_API_URL
     args = DEXGURU_API_ARGS
+  }
+
+  if (source === 'livecoinwatch') {
+    url = LIVECOINWATCH_API_URL
+    args = {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': LIVECOINWATCH_API_KEY
+      },
+      body: JSON.stringify({
+        currency: 'USD',
+        code: LIVECOINWATCH_HC_TICKER,
+        meta: true
+      })
+    }
   }
 
   const res = await fetch(url, args)
