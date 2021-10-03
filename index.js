@@ -8,6 +8,10 @@ import { getPriceData } from './get-price-data.js'
 const humblecoinLogo =  new MessageAttachment('./assets/humblecoin.png')
 const livecoinwatchLogo = new MessageAttachment('./assets/livecoinwatch.png')
 
+const buyText = '[Buy on pancakeswap](https://pancakeswap.finance/swap?inputCurrency=ETHER&outputCurrency=0xf65e64f2a7a625fbd5635dca9487244bc1983a84)'
+const livecoinwatchText = '[View on livecoinwatch.com](https://www.livecoinwatch.com/price/HC-HUMBLECOIN)'
+const learnMoreText = '[Learn more at humblecoin.cc](https://humblecoin.cc)'
+
 ;(async function () {
   const bot = new Client({ intents: [Intents.FLAGS.GUILDS] })
 
@@ -35,6 +39,7 @@ const livecoinwatchLogo = new MessageAttachment('./assets/livecoinwatch.png')
         { name: 'Volume (24h)', value: `${volume}`, inline: true },
         { name: 'Market Cap', value: `${cap}`, inline: true },
       )
+      .addField('•', `${buyText}\n${livecoinwatchText}\n${learnMoreText}`, false)
       .setTimestamp()
       .setFooter('Data from Live Coin Watch (wen coingecko?)', 'attachment://livecoinwatch.png')
 
