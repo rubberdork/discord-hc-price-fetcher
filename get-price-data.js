@@ -71,10 +71,10 @@ export async function getPriceData (source=DEFAULT_SOURCE) {
   const res = await fetch(url, args)
   const data = await res.json()
 
-  // In rare cases, PancakeSwap doesn't return price data so we fallback to dexguru
+  // In rare cases, PancakeSwap doesn't return price data so we fallback to Live Coin Watch
   if (data?.data?.price === '0') {
-    console.log('Pancakeswap returned no price data. Fallback to DexGuru.\n')
-    return await getPriceData('dexguru')
+    console.log('Pancakeswap returned no price data. Fallback to Live Coin Watch.\n')
+    return await getPriceData('livecoinwatch')
   }
 
   data.source = source
