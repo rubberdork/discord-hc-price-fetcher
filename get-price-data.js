@@ -20,9 +20,10 @@ const DEFAULT_SOURCE = 'pancakeswap'
 const DEFAULT_API_URL = PANCAKESWAP_API_URL
 
 function extractData (source, data) {
+  const common = { source }
   if (source === 'pancakeswap') {
     return {
-      source,
+      ...common,
       price: data.data.price,
       last_update: data.updated_at
     }
@@ -30,14 +31,14 @@ function extractData (source, data) {
 
   if (source === 'livecoinwatch') {
     return {
-      source,
+      ...common,
       price: data.rate
     }
   }
 
   if (source === 'dexguru') {
     return {
-      source,
+      ...common,
       price: data.price_usd,
       last_update: data.timestamp
     }
