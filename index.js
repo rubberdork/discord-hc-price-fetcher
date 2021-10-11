@@ -6,10 +6,8 @@ import { Client, Intents, MessageEmbed, MessageAttachment } from 'discord.js'
 import { getPriceData } from './get-price-data.js'
 
 const humblecoinLogo =  new MessageAttachment('./assets/humblecoin.png')
-const livecoinwatchLogo = new MessageAttachment('./assets/livecoinwatch.png')
 
 const buyText = '[Buy on pancakeswap](https://pancakeswap.finance/swap?inputCurrency=ETHER&outputCurrency=0xf65e64f2a7a625fbd5635dca9487244bc1983a84)'
-const livecoinwatchText = '[View on livecoinwatch.com](https://www.livecoinwatch.com/price/HC-HUMBLECOIN)'
 const learnMoreText = '[Learn more at humblecoin.cc](https://humblecoin.cc)'
 
 ;(async function () {
@@ -28,8 +26,11 @@ const learnMoreText = '[Learn more at humblecoin.cc](https://humblecoin.cc)'
 
     const priceData = await getPriceData()
     const price = `$${parseFloat(priceData.price).toFixed(8)}`
-    const volume = `$${parseFloat(priceData.volume).toFixed(2)}`
-    const cap = priceData.cap === null ? '—' : `$${parseFloat(priceData.cap).toFixed(2)}`
+    const volume = priceData.volume === null || priceData.volume === 0 ? '—' : `$${parseFloat(priceData.volume).toFixed(2)}`
+    const cap = priceData.cap === null || priceData.cap === 0 ? '—' : `$${parseFloat(priceData.cap).toFixed(2)}`
+
+    const sourceLogo = new MessageAttachment(`./assets/${priceData.logo_file}`)
+    const chartText = `[${priceData.chart_text}](${priceData.chart_link})`
 
     const msgEmbed = new MessageEmbed()
       .setColor('#0054ff')
@@ -39,13 +40,13 @@ const learnMoreText = '[Learn more at humblecoin.cc](https://humblecoin.cc)'
         { name: 'Volume (24h)', value: `${volume}`, inline: true },
         { name: 'Market Cap', value: `${cap}`, inline: true },
       )
-      .addField('•', `${buyText}\n${livecoinwatchText}\n${learnMoreText}`, false)
+      .addField('•', `${buyText}\n${chartText}\n${learnMoreText}`, false)
       .setTimestamp()
-      .setFooter('Data from Live Coin Watch (wen coingecko?)', 'attachment://livecoinwatch.png')
+      .setFooter(`Data from ${priceData.title} (wen coingecko?)`, `attachment://${priceData.logo_file}`)
 
     interaction.reply({
       embeds: [msgEmbed],
-      files: [humblecoinLogo, livecoinwatchLogo]
+      files: [humblecoinLogo, sourceLogo]
     })
 
   })

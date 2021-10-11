@@ -23,6 +23,7 @@ function extractData (source, data) {
   if (source === 'pancakeswap') {
     return {
       ...common,
+      title: 'PancakeSwap',
       price: data.data.price,
       last_update: data.updated_at
     }
@@ -31,17 +32,26 @@ function extractData (source, data) {
   if (source === 'livecoinwatch') {
     return {
       ...common,
+      title: 'Live Coin Watch',
+      logo_file: 'livecoinwatch.png',
       price: data.rate,
       volume: data.volume,
-      cap: data.cap
+      cap: data.cap,
+      chart_link: 'https://www.livecoinwatch.com/price/HC-HUMBLECOIN',
+      chart_text: 'View on livecoinwatch.com'
     }
   }
 
   if (source === 'dexguru') {
     return {
       ...common,
+      title: 'DexGuru',
+      logo_file: 'dexguru.png',
       price: data.price_usd,
-      last_update: data.timestamp
+      volume: 0,
+      cap: 0,
+      chart_link: 'https://dex.guru/token/0xf65e64f2a7a625fbd5635dca9487244bc1983a84-bsc',
+      chart_text: 'View on dex.guru'
     }
   }
 }
@@ -77,6 +87,10 @@ export async function getPriceData (source=DEFAULT_SOURCE) {
 
   const res = await fetch(url, args)
   const data = await res.json()
+
+  if (source === 'livecoinwatch' && data.rate === null) {
+    return getPriceData('dexguru')
+  }
 
   data.source = source
   console.log(data)
